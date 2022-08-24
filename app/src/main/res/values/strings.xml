@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">tensorflow_app</string>
+    <string name="logo">PLANT AILNMENT DETECTOR</string>
+    <string name="hello_world">Hello World!</string>
+    <string name='upload'>Upload Image</string>
+    <string name='rel'>relative</string>
+    <string name="press">Press to upload image</string>
+    <string name="select">Upload</string>
+    <string name="Take">Camera</string>
+    <string name="TextView">This is the text view</string>
+    <string name="content">The image taking by user for analysis</string>
+    <string name="res">This is a ${text}. Confidence is${con}</string>
+    <string name="result">This is the result field</string>
+    <string name="ImageView">This is the image view</string>
+</resources>
