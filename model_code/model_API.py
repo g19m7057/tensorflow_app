@@ -9,7 +9,8 @@ from flask import Flask, jsonify, request
 import cv2
 
 model_path = "/Users/sifisokuhlemazibuko/Documents/honours/honours_project/models/tensorflow_model_VGG16.h5"
-label_path = "/Users/sifisokuhlemazibuko/AndroidStudioProjects/tensorflow_app/app/src/main/assets/plant_classes.txt"
+# label_path = "/Users/sifisokuhlemazibuko/AndroidStudioProjects/tensorflow_app/app/src/main/assets/plant_classes.txt"
+label_path = "plant_classes.txt"
 
 with open(label_path) as f:
     classnames = f.readlines()
