@@ -8,5 +8,5 @@ The model API takes the saved model hosted on the local machine, the model is a 
 trained using transfer learning. 
 The API serves the model to the Android application, which takes as input an image of a plant 
 then sends it to the backend, the model in the backend takes the image for prediction returning 
-a prediction and confidence score. The reuslt is returned to the application as a JSON response
+a prediction and confidence score. The result is returned to the application as a JSON response
 which the application parses and displays to the user.
