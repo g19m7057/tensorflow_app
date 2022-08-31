@@ -21,7 +21,6 @@ import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.task.vision.detector.ObjectDetector
 import java.io.ByteArrayOutputStream
 import java.io.IOException
-import kotlin.math.roundToInt
 import kotlin.system.exitProcess
 
 
@@ -33,9 +32,10 @@ open class MainActivity : AppCompatActivity() {
         private const val requestImageCapture = 1
         @SuppressLint("StaticFieldLeak")
         private lateinit var binding: ActivityMainBinding
-        private const val imageSize = 255
+        private const val imageSize = 256
     }
 
+    @Suppress("LocalVariableName")
     override fun onCreate(savedInstanceState: Bundle?) {
 
 
@@ -92,7 +92,7 @@ open class MainActivity : AppCompatActivity() {
             .build()
 
         var request = Request.Builder()
-            .url("http://146.231.180.134:5000/predict")
+            .url("http://192.168.1.2:5000/predict")
             .post(requestBody)
             .build()
 
@@ -103,14 +103,22 @@ open class MainActivity : AppCompatActivity() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun displayResult(text: String){
+    private fun displayResult(text: String): String {
         val jsonObject = JSONTokener(text).nextValue() as JSONObject
         val confidence = jsonObject.getString("confidence")
         val prediction = jsonObject.getString("prediction")
         prediction.filterNot{it == '\''}
-//        binding.results?.text = jsonObject.toString()
-        binding.results.text = "${prediction}.\nConfidence: ${confidence}%."
-    }
+        return "${prediction}.\nConfidence: ${confidence}%."
+    } // displayResults
+
+    private fun sendMessage(string: String, bitmap: Bitmap?) {
+        val message : String = displayResult(string)
+        val intent = Intent(this, MainActivity2::class.java).apply {
+            putExtra("results", message)
+            putExtra("bitmap", bitmap)
+        }
+        startActivity(intent)
+    } // send to next activity
 
 //    private fun detect(bitmap: Bitmap): String {
 //
@@ -132,13 +140,9 @@ open class MainActivity : AppCompatActivity() {
 //            json.put("prediction", cat.label)
 //        }
 //        return json.toString()
-//    }
+//    } // detect for locally hosted model
 
-    private fun display(bitmap: Bitmap?){
-        binding.imageView.setImageBitmap(bitmap)
-    }
-
-    private fun scaleImage(bitmap: Bitmap?): Bitmap {
+    private fun scaleImage(bitmap: Bitmap): Bitmap {
         return ThumbnailUtils.extractThumbnail(bitmap, imageSize, imageSize)
     }
 
@@ -151,25 +155,24 @@ open class MainActivity : AppCompatActivity() {
             if (requestCode == requestImageCapture) {
                 var bitmap = data?.extras?.get("data") as Bitmap
                 bitmap = scaleImage(bitmap)
-                display(bitmap)
-                displayResult(detect(scaleImage(bitmap)))
+                sendMessage(detect(scaleImage(bitmap)), bitmap)
             }
 
             // if requesting image from gallery
             if (requestCode == imageRequestCode) {
                 var image = data?.data
-
                 var bitmap = MediaStore.Images.Media.getBitmap(
                     this.contentResolver,
                     image
                 ) // convert to bitmap from Uri
+
                 bitmap = scaleImage(bitmap)
-                display(bitmap)
-                displayResult(detect(bitmap))
+                sendMessage(detect(scaleImage(bitmap)), bitmap)
             }
         }
     }
 }
+
 
 
 

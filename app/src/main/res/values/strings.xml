@@ -12,4 +12,5 @@
     <string name="res">This is a ${text}. Confidence is${con}</string>
     <string name="result">This is the result field</string>
     <string name="ImageView">This is the image view</string>
+    <string name="back_button">Home</string>
 </resources>
